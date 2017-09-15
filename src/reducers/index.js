@@ -2,10 +2,9 @@ import { combineReducers } from 'redux';
 
 import { REQUEST_GROUPS, RECEIVE_GROUPS } from '../actions';
 
-function groups(state = {
-  isFetching: false,
-  items: []
-}, action) {
+import initialState from './initialState';
+
+function groups(state = initialState, action) {
   switch (action.type) {
     case REQUEST_GROUPS:
       return {

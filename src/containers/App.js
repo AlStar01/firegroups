@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { Route } from 'react-router-dom'
 import { Grid, Row, Col } from 'react-bootstrap';
 
 import './App.css';
 
 import Header from '../components/header/Header';
 import Groups from '../components/groups/Groups';
+import Home from '../components/home/Home';
 
 class App extends Component {
   render() {
-    const { isFetching, groups } = this.props;
-
     return (
       <div className="App">
         <Header />
@@ -18,11 +17,8 @@ class App extends Component {
         <Grid>
           <Row>
             <Col sm={12}>
-              {isFetching && groups.length === 0 &&
-                <div>Loading...</div>
-              }
-
-              <Groups groups={groups} />
+              <Route exact path="/" component={Home} />
+              <Route path="/groups" component={Groups} />
             </Col>
           </Row>
         </Grid>
@@ -31,9 +27,4 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { groups: { isFetching, items: groups } } = state;
-  return { isFetching, groups };
-}
-
-export default connect(mapStateToProps)(App);
+export default App;

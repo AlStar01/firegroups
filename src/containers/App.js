@@ -7,6 +7,7 @@ import './App.css';
 import Header from '../components/header/Header';
 import Groups from '../components/groups/Groups';
 import Home from '../components/home/Home';
+import Login from '../components/account/login/Login';
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
             <Col sm={12}>
               <Route exact path="/" component={Home} />
               <Route path="/groups" component={Groups} />
+              <Route path="/login" component={Login} />
             </Col>
           </Row>
         </Grid>

@@ -1,11 +1,16 @@
 import React from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Navbar, Nav, NavItem, NavDropdown } from 'react-bootstrap';
 import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 
 import './Header.css';
 
-const Header = () => (
+const Header = (props) => {
+  console.log('props: ', props);
+
+  return (
     <Navbar collapseOnSelect>
          <Navbar.Header>
             <Navbar.Brand>
@@ -20,9 +25,21 @@ const Header = () => (
             <LinkContainer to="/groups">
               <NavItem eventKey={1}>Groups</NavItem>
             </LinkContainer>
+            <LinkContainer to="/login">
+              <NavItem eventKey={1}>Login</NavItem>
+            </LinkContainer>
           </Nav>
          </Navbar.Collapse>
     </Navbar>
-);
+  );
+};
 
-export default Header;
+function mapStateToProps(state) {
+  const { auth } = state;
+
+  return {
+    auth
+  }
+}
+
+export default withRouter(connect(mapStateToProps)(Header));

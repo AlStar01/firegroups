@@ -21,22 +21,43 @@ function auth(state = initialState, action) {
         isFetching: false,
         isAuthenticated: true,
         user: action.user
-      }
+      };
+
+    case types.LOGIN.FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isAuthenticated: false
+      };
 
     case types.LOGOUT.REQUEST:
       return {
         ...state,
         isFetching: true,
         isAuthenticated: true
-      }
+      }   ;
 
     case types.LOGOUT.SUCCESS:
       return {
         ...state,
         isFetching: false,
         isAuthenticated: false,
-        user: undefined
-      }
+        user: null
+      };
+
+    case types.LOGOUT.FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isAuthenticated: false
+      };
+
+    case types.SYNC_USER:
+      return {
+        ...state,
+        isAuthenticated: action.user != null,
+        user: action.user
+      };
 
     default:
       return state;

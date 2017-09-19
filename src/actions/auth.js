@@ -8,7 +8,8 @@ export const types = {
     REQUEST: 'REQUEST_LOGOUT',
     SUCCESS: 'LOGOUT_SUCCESS',
     FAILURE: 'LOGOUT_FAILURE'
-  }
+  },
+  SYNC_USER: 'SYNC_USER'
 };
 
 export function requestLogin() {
@@ -47,5 +48,12 @@ export function logoutFailure(error) {
   return {
     type: types.LOGOUT.FAILURE,
     error
+  };
+}
+
+export function syncUser(user) {
+  return {
+    type: types.SYNC_USER,
+    user
   };
 }

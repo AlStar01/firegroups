@@ -32,6 +32,9 @@ function* syncGroups() {
       yield put(groupActions.syncGroupsSuccess(value));
     }
   }
+  catch (error) {
+    yield put(groupActions.syncGroupsFailure(error));
+  }
   finally {
     if(yield cancelled()) {
       channel.close();
@@ -45,6 +48,7 @@ export default function* groupsRootSaga() {
 
     yield take([
       authActions.types.SYNC.FAILURE,
+      authActions.types.LOGIN.FAILURE,
       authActions.types.LOGOUT.SUCCESS,
       groupActions.types.SYNC.FAILURE,
       groupActions.types.SYNC.STOP

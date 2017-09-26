@@ -35,7 +35,7 @@ function auth(state = initialState, action) {
         ...state,
         isFetching: true,
         isAuthenticated: true
-      }   ;
+      };
 
     case types.LOGOUT.SUCCESS:
       return {
@@ -52,11 +52,18 @@ function auth(state = initialState, action) {
         isAuthenticated: false
       };
 
-    case types.SYNC_USER:
+    case types.SYNC.SUCCESS:
       return {
         ...state,
         isAuthenticated: action.user != null,
         user: action.user
+      };
+
+      case types.SYNC.ERROR:
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null
       };
 
     default:

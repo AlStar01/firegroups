@@ -1,28 +1,11 @@
-import { put, call, fork, takeEvery, all } from 'redux-saga/effects';
-
-import * as actions from '../actions/groups';
-import { api } from '../services';
+import { all } from 'redux-saga/effects';
 
 import auth from './auth';
-
-function* getAllGroups() {
-  const groups = yield call(api.getGroups);
-  yield put(actions.requestGroupsSuccess(groups));
-}
-
-function* watchGetGroups() {
-  yield takeEvery(actions.types.GROUPS.REQUEST, getAllGroups);
-}
-
-function* startup() {
-  yield put(actions.requestGroups());
-}
+import groups from './groups';
 
 export default function* root() {
   yield all([
-    fork(startup),
-    fork(getAllGroups),
-    fork(watchGetGroups),
-    auth()
+    auth(),
+    groups()
   ]);
 }

@@ -1,5 +1,5 @@
 import { put, call, takeEvery, fork, take } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga'
+import { eventChannel } from 'redux-saga';
 
 import firebase from '../firebase';
 
@@ -55,17 +55,19 @@ function* syncUserSaga() {
   const channel = yield call(authChannel);
 
   while(true) {
-    const { error, user } = yield take(channel);
+    const { user, error } = yield take(channel);
 
     if (user) {
-      yield put(actions.syncUser(user));
+      yield put(actions.syncUserSuccess(user));
+    } else if (error) {
+      yield put(actions.syncUserFailure(error));
     } else {
-      yield put(actions.syncUser(null));
+      yield put(actions.syncUserSuccess(null));
     };
   }
 }
 
-export default function* loginRootSaga() {
+export default function* authRootSaga() {
   yield fork(syncUserSaga);
 
   yield [

@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 class Groups extends Component {
+  componentDidMount() {
+    this.props.dispatch({ type: 'SYNC_GROUPS_START' });
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch({ type: 'SYNC_GROUPS_STOP' });
+  }
+
   render() {
     const { isFetching, groups } = this.props;
 
@@ -10,6 +19,10 @@ class Groups extends Component {
       <div>
         {isFetching && groups.length === 0 &&
           <div>Loading...</div>
+        }
+
+        {!isFetching && groups.length === 0 &&
+          <div>No groups...</div>
         }
 
         {!isFetching && groups.length > 0 &&
@@ -21,6 +34,11 @@ class Groups extends Component {
     );
   }
 }
+
+Groups.PropTypes = {
+  isFetching: PropTypes.bool.isRequired,
+  groups: PropTypes.array.isRequired
+};
 
 function mapStateToProps(state) {
   const { groups: { isFetching, items: groups }} = state;

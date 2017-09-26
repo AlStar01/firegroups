@@ -9,7 +9,6 @@ import './Header.css';
 
 const Header = (props) => {
   const { isAuthenticated } = props.auth;
-  console.log('props: ', props);
 
   const handleClick = () => props.dispatch({ type: 'REQUEST_LOGOUT' });
 

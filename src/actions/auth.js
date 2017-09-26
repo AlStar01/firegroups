@@ -9,7 +9,10 @@ export const types = {
     SUCCESS: 'LOGOUT_SUCCESS',
     FAILURE: 'LOGOUT_FAILURE'
   },
-  SYNC_USER: 'SYNC_USER'
+  SYNC: {
+    SUCCESS: 'SYNC_USER_SUCCESS',
+    FAILURE: 'SYNC_USER_FAILURE'
+  }
 };
 
 export function requestLogin() {
@@ -51,9 +54,16 @@ export function logoutFailure(error) {
   };
 }
 
-export function syncUser(user) {
+export function syncUserSuccess(user) {
   return {
-    type: types.SYNC_USER,
+    type: types.SYNC.SUCCESS,
     user
+  };
+}
+
+export function syncUserFailure(error) {
+  return {
+    type: types.SYNC.FAILURE,
+    error
   };
 }

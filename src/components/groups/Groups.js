@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 
 class Groups extends Component {
   componentDidMount() {
@@ -13,9 +13,12 @@ class Groups extends Component {
   }
 
   render() {
-    const { isFetching, groups } = this.props;
+    const { isFetching, groups, auth: { isAuthenticated } } = this.props;
 
     return (
+      !isAuthenticated ? (
+        <Redirect to="/login" />
+      ) : (
       <div>
         {isFetching && groups.length === 0 &&
           <div>Loading...</div>
@@ -31,6 +34,7 @@ class Groups extends Component {
           </ul>
         }
       </div>
+      )
     );
   }
 }
@@ -41,8 +45,8 @@ Groups.PropTypes = {
 };
 
 function mapStateToProps(state) {
-  const { groups: { isFetching, items: groups }} = state;
-  return { isFetching, groups };
+  const { groups: { isFetching, items: groups }, auth } = state;
+  return { isFetching, groups, auth };
 }
 
 export default withRouter(connect(mapStateToProps)(Groups));

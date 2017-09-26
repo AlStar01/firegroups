@@ -1,4 +1,4 @@
-import { put, call, takeEvery, fork, take } from 'redux-saga/effects';
+import { put, call, takeEvery, fork, take, all } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
 import firebase from '../firebase';
@@ -70,8 +70,8 @@ function* syncUserSaga() {
 export default function* authRootSaga() {
   yield fork(syncUserSaga);
 
-  yield [
+  yield all([
     takeEvery(actions.types.LOGIN.REQUEST, loginSaga),
     takeEvery(actions.types.LOGOUT.REQUEST, logoutSaga)
-  ];
+  ]);
 }

@@ -3,10 +3,11 @@ import { eventChannel } from 'redux-saga';
 
 import firebase from '../firebase';
 
-import * as actions from '../actions/groups';
+import * as groupActions from '../actions/groups';
+import * as authActions from '../actions/auth';
 
 function groupsChannel() {
-  const ref = firebase.database().ref('groups/');
+  const ref = firebase.database().ref('group-metadata/');
 
   const channel = eventChannel(emit => {
     const callback = ref.on('child_added', (data) => {
@@ -28,7 +29,7 @@ function* syncGroups() {
   try {
     while (true) {
       const { value } = yield take(groupsChannel);
-      yield put(actions.syncGroupsSuccess(value));
+      yield put(groupActions.syncGroupsSuccess(value));
     }
   }
   finally {
@@ -39,10 +40,15 @@ function* syncGroups() {
 }
 
 export default function* groupsRootSaga() {
-  while (yield take(actions.types.SYNC.START)) {
+  while (yield take(groupActions.types.SYNC.START)) {
     const syncTask = yield fork(syncGroups);
 
-    yield take(actions.types.SYNC.STOP);
+    yield take([
+      authActions.types.SYNC.FAILURE,
+      authActions.types.LOGOUT.SUCCESS,
+      groupActions.types.SYNC.FAILURE,
+      groupActions.types.SYNC.STOP
+    ]);
 
     yield cancel(syncTask);
   }

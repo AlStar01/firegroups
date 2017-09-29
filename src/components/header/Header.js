@@ -33,7 +33,9 @@ const Header = (props) => {
               </LinkContainer>
               ) : (
                 <NavDropdown eventKey={4} title="Account" id="account-nav-dropdown">
-                  <MenuItem eventKey={4.1}>My account</MenuItem>
+                  <LinkContainer to="/dashboard">
+                    <MenuItem eventKey={4.1}>My account</MenuItem>
+                  </LinkContainer>
                   <MenuItem divider />
                   <MenuItem eventKey={4.2} onClick={handleClick}>Logout</MenuItem>
                 </NavDropdown>
@@ -50,7 +52,7 @@ function mapStateToProps(state) {
 
   return {
     auth
-  }
+  };
 }
 
 export default withRouter(connect(mapStateToProps)(Header));

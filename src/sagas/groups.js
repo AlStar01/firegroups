@@ -43,16 +43,23 @@ function* syncGroups() {
 }
 
 export default function* groupsRootSaga() {
-  while (yield take(groupActions.types.SYNC.START)) {
+  const syncStartActions = [
+    groupActions.types.SYNC.START,
+    authActions.types.LOGIN.SUCCESS
+  ];
+
+  const syncStopActions = [
+    authActions.types.SYNC.FAILURE,
+    authActions.types.LOGIN.FAILURE,
+    authActions.types.LOGOUT.SUCCESS,
+    groupActions.types.SYNC.FAILURE,
+    groupActions.types.SYNC.STOP
+  ];
+
+  while (yield take([...syncStartActions])) {
     const syncTask = yield fork(syncGroups);
 
-    yield take([
-      authActions.types.SYNC.FAILURE,
-      authActions.types.LOGIN.FAILURE,
-      authActions.types.LOGOUT.SUCCESS,
-      groupActions.types.SYNC.FAILURE,
-      groupActions.types.SYNC.STOP
-    ]);
+    yield take([...syncStopActions]);
 
     yield cancel(syncTask);
   }

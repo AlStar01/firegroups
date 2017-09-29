@@ -4,11 +4,21 @@ import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 
 class Groups extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
   componentDidMount() {
     this.props.dispatch({ type: 'SYNC_GROUPS_START' });
   }
 
   componentWillUnmount() {
+    // this.props.dispatch({ type: 'SYNC_GROUPS_STOP' });
+  }
+
+  handleClick() {
     this.props.dispatch({ type: 'SYNC_GROUPS_STOP' });
   }
 
@@ -33,6 +43,8 @@ class Groups extends Component {
             {groups.map(group => <li key={group.id}>{group.name}</li>)}
           </ul>
         }
+
+        <button type="button" onClick={this.handleClick}>Click me!</button>
       </div>
       )
     );

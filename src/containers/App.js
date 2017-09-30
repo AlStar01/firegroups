@@ -4,11 +4,14 @@ import { Grid, Row, Col } from 'react-bootstrap';
 
 import './App.css';
 
+import PrivateRoute from '../components/account/PrivateRoute';
 import Header from '../components/header/Header';
-import GroupsList from '../components/groups/groups-list/GroupsList';
 import Home from '../components/home/Home';
 import Login from '../components/account/login/Login';
 import Dashboard from '../components/account/dashboard/Dashboard';
+
+import GroupList from '../components/groups/group-list/GroupList';
+import GroupDetail from '../components/groups/group-detail/GroupDetail';
 
 class App extends Component {
   render() {
@@ -21,9 +24,10 @@ class App extends Component {
             <Col sm={12}>
               <Switch>
                 <Route path="/" exact component={Home} />
-                <Route path="/groups" component={GroupsList} />
                 <Route path="/login" component={Login} />
-                <Route path="/dashboard" component={Dashboard} />
+                <PrivateRoute path="/groups/:id" component={GroupDetail} />
+                <PrivateRoute path="/groups" component={GroupList} />
+                <PrivateRoute path="/dashboard" component={Dashboard} />
               </Switch>
             </Col>
           </Row>

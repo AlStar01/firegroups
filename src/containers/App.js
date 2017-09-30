@@ -12,6 +12,7 @@ import Dashboard from '../components/account/dashboard/Dashboard';
 
 import GroupList from '../components/groups/group-list/GroupList';
 import GroupDetail from '../components/groups/group-detail/GroupDetail';
+import GroupCreate from '../components/groups/group-create/GroupCreate';
 
 class App extends Component {
   render() {
@@ -25,6 +26,7 @@ class App extends Component {
               <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path="/login" component={Login} />
+                <PrivateRoute path="/groups/create" component={GroupCreate} />
                 <PrivateRoute path="/groups/:id" component={GroupDetail} />
                 <PrivateRoute path="/groups" component={GroupList} />
                 <PrivateRoute path="/dashboard" component={Dashboard} />

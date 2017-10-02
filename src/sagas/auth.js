@@ -25,7 +25,7 @@ function authChannel() {
     );
 
     return unsubscribe;
-  })
+  });
 
   return channel;
 }

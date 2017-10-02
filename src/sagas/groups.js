@@ -1,10 +1,12 @@
-import { call, cancelled, put, take, fork, cancel } from 'redux-saga/effects'
+import { call, cancelled, put, take, takeEvery, takeLatest, fork, cancel } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
 import firebase from '../firebase';
 
 import * as groupActions from '../actions/groups';
 import * as authActions from '../actions/auth';
+
+import { createGroup } from '../services/groups.service';
 
 function groupsChannel() {
   const ref = firebase.database().ref('group-metadata/');
@@ -14,7 +16,7 @@ function groupsChannel() {
       emit({
         snapshot: data,
         value: data.val()
-      })
+      });
     });
 
     return () => ref.off('child_added', callback);
@@ -23,12 +25,26 @@ function groupsChannel() {
   return channel;
 }
 
+function* create(action) {
+  try {
+    yield call(createGroup, action.group);
+    yield put(groupActions.createGroupSuccess());
+  }
+  catch (error) {
+    yield put(groupActions.createGroupFailure(error));
+  }
+}
+
+function* watchCreateGroup() {
+  yield takeEvery(groupActions.types.GROUPS.CREATE.REQUEST, create);
+}
+
 function* syncGroups() {
   const channel = yield call(groupsChannel);
 
   try {
     while (true) {
-      const { value } = yield take(groupsChannel);
+      const { value } = yield takeEvery(groupsChannel);
       yield put(groupActions.syncGroupsSuccess(value));
     }
   }
@@ -42,7 +58,7 @@ function* syncGroups() {
   }
 }
 
-export default function* groupsRootSaga() {
+function* sync() {
   const syncStartActions = [
     groupActions.types.SYNC.START,
     authActions.types.LOGIN.SUCCESS
@@ -63,4 +79,9 @@ export default function* groupsRootSaga() {
 
     yield cancel(syncTask);
   }
+}
+
+export default function* groupsRootSaga() {
+  yield fork(sync);
+  yield fork(watchCreateGroup);
 }

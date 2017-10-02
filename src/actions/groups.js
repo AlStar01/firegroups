@@ -5,7 +5,12 @@ export const types = {
   GROUPS: {
     REQUEST: 'REQUEST_GROUPS',
     SUCCESS: 'REQUEST_GROUPS_SUCCESS',
-    FAILURE: 'REQUEST_GROUPS_FAILURE'
+    FAILURE: 'REQUEST_GROUPS_FAILURE',
+    CREATE: {
+      REQUEST: 'CREATE_GROUP_REQUEST',
+      SUCCESS: 'CREATE_GROUP_SUCCESS',
+      FAILURE: 'CREATE_GROUP_FAILURE'
+    }
   },
   SYNC: {
     SUCCESS: 'SYNC_GROUPS_SUCCESS',
@@ -31,6 +36,26 @@ export function requestGroupsSuccess(groups) {
 export function requestGroupsFailure(error) {
   return {
     type: types.GROUPS.FAILURE,
+    error
+  };
+}
+
+export function createGroup(group) {
+  return {
+    type: types.GROUPS.CREATE.REQUEST,
+    group
+  };
+}
+
+export function createGroupSuccess() {
+  return {
+    type: types.GROUPS.CREATE.SUCCESS
+  };
+}
+
+export function createGroupFailure(error) {
+  return {
+    type: types.GROUPS.CREATE.FAILURE,
     error
   };
 }

@@ -7,15 +7,12 @@
       "$groupId": {
         // Append-only by anyone, and admins can add official groups, and edit or remove groups as well.
         ".write": "(auth != null) && (!data.exists() || root.child('moderators').hasChild(auth.uid) || data.child('createdByUserId').val() === auth.uid)",
-        ".validate": "newData.hasChildren(['name','type'])",
+        ".validate": "newData.hasChildren(['name', 'description', 'type', 'createdByUserId', 'createdAt'])",
         "id": {
           ".validate": "(newData.val() === $groupId)"
         },
         "createdByUserId": {
           ".validate": "(auth.uid === newData.val())"
-        },
-        "numUsers": {
-          ".validate": "(newData.isNumber())"
         },
         "type": {
           ".validate": "('public' === newData.val()) || 'private' === newData.val() || ('official' === newData.val() && (root.child('moderators').hasChild(auth.uid)))"

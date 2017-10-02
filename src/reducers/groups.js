@@ -20,6 +20,26 @@ function groups(state = initialState, action) {
         items: action.groups
       };
 
+    case types.GROUPS.CREATE.REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        group: action.group
+      };
+
+    case types.GROUPS.CREATE.SUCCESS:
+      return {
+        ...state,
+        isFetching: false
+      };
+
+    case types.GROUPS.CREATE.FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.error
+      };
+
     case types.SYNC.SUCCESS:
       return {
         ...state,

@@ -35,8 +35,11 @@ GroupList.PropTypes = {
 };
 
 function mapStateToProps(state) {
-  const { groups: { isFetching, items: groups }, auth } = state;
-  return { isFetching, groups, auth };
+  const { groups: { isFetching, items: groups }} = state;
+  return {
+    isFetching,
+    groups
+  };
 }
 
 export default withRouter(connect(mapStateToProps)(GroupList));
